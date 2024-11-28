@@ -22,9 +22,11 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '3.24.3'
-      - run: flutter pub get
-      - run: flutter test
-      - run: flutter build apk --debug --split-per-abi
+      - run: flutter config --no-analytics
+      - run: flutter doctor
+      - run: cd ../../ && flutter pub get
+      - run: cd ../../ && flutter test
+      - run: cd ../../ && flutter build apk --debug --split-per-abi
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
