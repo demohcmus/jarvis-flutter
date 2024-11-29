@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.2.2' // Plugin Android Gradle
+        classpath 'com.google.gms:google-services:4.4.2' // Plugin Google Services (nếu dùng Firebase)
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -8,8 +19,6 @@ allprojects {
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(":app")
 }
 
