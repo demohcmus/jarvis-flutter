@@ -1,0 +1,35 @@
+on:
+    pull_request:
+      branches:
+        - master
+        - main
+        - advance-feature
+    push:
+      branches:
+        - master
+        - main
+        - advance-feature
+name: "Build & Release"
+jobs:
+    build:
+      name: Build & Release
+      runs-on: windows-latest
+      steps:
+        - uses: actions/checkout@v1
+        - uses: actions/setup-java@v1
+          with:
+            java-version: '17.x'
+        - uses: subosito/flutter-action@v1
+          with:
+            flutter-version: '3.24.3'
+        - run: flutter config --no-analytics
+        - run: flutter doctor
+        - run: cd jarvis_application && flutter pub get
+        - run: cd jarvis_application && flutter test
+        - run: cd jarvis_application && flutter build apk --debug --split-per-abi
+        - name: Push to Releases
+          uses: ncipollo/release-action@v1
+          with:
+            artifacts: "build/app/outputs/apk/debug/*"
+            tag: v1.0.${{github.run_number}}
+            token: ${{secrets.TOKEN_CICD}}
